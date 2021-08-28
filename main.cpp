@@ -26,7 +26,7 @@ public:
 private:
     void drawEvent() override;
     void keyPressEvent(KeyEvent& event) override;
-    void drawRectange(int x, int y, const MutableImageView2D& image_view, const Color3& colour);
+    void drawRectangle(int x, int y, const MutableImageView2D& image_view, const Color3& colour);
     int m_y1;
     int m_y2;
 };
@@ -55,7 +55,7 @@ void PongPongApplication::keyPressEvent(KeyEvent& event)
     drawEvent();
 }
 
-void PongPongApplication::drawRectange(int x, int y, const MutableImageView2D& image_view, const Color3& colour)
+void PongPongApplication::drawRectangle(int x, int y, const MutableImageView2D& image_view, const Color3& colour)
 {
     auto pixel = image_view.pixels<Color3>();
     int size_x = image_view.size().x() / 80;
