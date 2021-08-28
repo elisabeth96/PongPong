@@ -87,8 +87,8 @@ void PongPongApplication::drawEvent()
         }
     }
     //Paint squares
-    drawRectange(image_view.size().x() / 80 + 5, m_y1, image_view, {1, 1, 1});
-    drawRectange(image_view.size().x() - image_view.size().x() / 80 - 6, m_y2, image_view, {1, 1, 1});
+    drawRectangle(image_view.size().x() / 80 + 5, m_y1, image_view, {1, 1, 1});
+    drawRectangle(image_view.size().x() - image_view.size().x() / 80 - 6, m_y2, image_view, {1, 1, 1});
 
     //upload pixels to GPU
     GL::Texture2D texture;
