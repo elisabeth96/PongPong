@@ -1,7 +1,3 @@
-//
-// Created by janos on 7/4/20.
-//
-
 #include "FullScreenTriangle.h"
 
 #include <Corrade/Utility/Resource.h>
@@ -15,10 +11,11 @@
 using namespace Magnum;
 using namespace Corrade;
 
-FullScreenTriangle::FullScreenTriangle() {
+FullScreenTriangle::FullScreenTriangle()
+{
     MAGNUM_ASSERT_GL_VERSION_SUPPORTED(GL::Version::GL450);
 
-    const Utility::Resource rs{"tmo-data"};
+    const Utility::Resource rs{"pp-data"};
 
     GL::Shader vert{GL::Version::GL450, GL::Shader::Type::Vertex};
     GL::Shader frag{GL::Version::GL450, GL::Shader::Type::Fragment};
@@ -34,7 +31,8 @@ FullScreenTriangle::FullScreenTriangle() {
     CORRADE_INTERNAL_ASSERT_OUTPUT(link());
 }
 
-FullScreenTriangle& FullScreenTriangle::bindTexture(GL::Texture2D& texture) {
+FullScreenTriangle& FullScreenTriangle::bindTexture(GL::Texture2D& texture)
+{
     texture.bind(0);
     return *this;
 }
