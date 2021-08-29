@@ -1,6 +1,5 @@
-//
-// Created by elisabeth on 28.08.21.
-//
+
+
 #include <Magnum/GL/DefaultFramebuffer.h>
 #include <Magnum/Platform/Sdl2Application.h>
 #include <Magnum/Math/Color.h>
@@ -11,10 +10,14 @@
 #include <Magnum/GL/Texture.h>
 #include <Magnum/GL/TextureFormat.h>
 #include <Magnum/GL/Mesh.h>
-#include <vector>
+
 #include <algorithm>
+#include <vector>
+
+#include <SDL.h>
 
 #include "FullScreenTriangle.h"
+#include <iostream>
 
 using namespace Magnum;
 
@@ -26,42 +29,72 @@ public:
 private:
     void drawEvent() override;
     void keyPressEvent(KeyEvent& event) override;
+    void keyReleaseEvent(KeyEvent& event) override;
     void drawRectangle(int x, int y, const MutableImageView2D& image_view, const Color3& colour);
-    int m_y1;
-    int m_y2;
+    int m_y_left;
+    int m_y_right;
+    int m_width_half;
+    int m_height_half;
+
+    enum class PlayerState
+    {
+        Up,
+        Down,
+        Idle
+    };
+
+    PlayerState m_left_player_state = PlayerState::Idle;
+    PlayerState m_right_player_state = PlayerState::Idle;
 };
 
 PongPongApplication::PongPongApplication(const Arguments& arguments)
     : Platform::Application{arguments}
 {
-    m_y1 = windowSize().y() / 2;
-    m_y2 = windowSize().y() / 2;
+    m_y_left  = windowSize().y() / 2;
+    m_y_right = windowSize().y() / 2;
+    m_width_half = windowSize().x() / 80;
+    m_height_half = windowSize().y() / 10;
 }
 
 void PongPongApplication::keyPressEvent(KeyEvent& event)
 {
     if (event.key() == KeyEvent::Key::Left) {
-        m_y2 -= windowSize().y() / 200;
+        m_right_player_state = PlayerState::Down;
     }
-    else if (event.key() == KeyEvent::Key::Right) {
-        m_y2 += windowSize().y() / 200;
+    if (event.key() == KeyEvent::Key::Right) {
+        m_right_player_state = PlayerState::Up;
     }
-    else if (event.key() == KeyEvent::Key::A) {
-        m_y1 -= windowSize().y() / 200;
+    if (event.key() == KeyEvent::Key::D) {
+        m_left_player_state = PlayerState::Down;
     }
-    else if (event.key() == KeyEvent::Key::D) {
-        m_y1 += windowSize().y() / 200;
+    if (event.key() == KeyEvent::Key::A) {
+        m_left_player_state = PlayerState::Up;
     }
-    drawEvent();
+    redraw();
+}
+
+void PongPongApplication::keyReleaseEvent(KeyEvent& event)
+{
+    if (event.key() == KeyEvent::Key::Left) {
+        m_right_player_state = PlayerState::Idle;
+    }
+    if (event.key() == KeyEvent::Key::Right) {
+        m_right_player_state = PlayerState::Idle;
+    }
+    if (event.key() == KeyEvent::Key::D) {
+        m_left_player_state = PlayerState::Idle;
+    }
+    if (event.key() == KeyEvent::Key::A) {
+        m_left_player_state = PlayerState::Idle;
+    }
+    redraw();
 }
 
 void PongPongApplication::drawRectangle(int x, int y, const MutableImageView2D& image_view, const Color3& colour)
 {
     auto pixel = image_view.pixels<Color3>();
-    int size_x = image_view.size().x() / 80;
-    int size_y = image_view.size().y() / 10;
-    for (auto i = -size_x; i < size_x + 1; i++) {
-        for (auto j = -size_y; j < size_y + 1; j++) {
+    for (auto i = -m_width_half; i < m_width_half + 1; i++) {
+        for (auto j = -m_height_half; j < m_height_half + 1; j++) {
             int y_coord             = std::min(std::max(y + j, 0), image_view.size().y() - 1);
             int x_coord             = std::min(std::max(x + i, 0), image_view.size().x() - 1);
             pixel[y_coord][x_coord] = colour;
@@ -73,7 +106,9 @@ void PongPongApplication::drawEvent()
 {
     GL::defaultFramebuffer.clear(GL::FramebufferClear::Color);
     // get of the window
-    int window_size = windowSize().product();
+    const auto size_x = windowSize().x();
+    const auto size_y = windowSize().y();
+    int window_size   = windowSize().product();
 
     // Allocate storage for pixel colours
     std::vector<Color3> colours(window_size);
@@ -86,9 +121,30 @@ void PongPongApplication::drawEvent()
             pixel[y][x] = {0, 0.3, 0.8};
         }
     }
+
+    if (m_left_player_state == PlayerState::Up) {
+        m_y_left += size_y / 100;
+        m_y_left = std::min(m_y_left, size_y-m_height_half-1);
+    }
+    if (m_left_player_state == PlayerState::Down) {
+        m_y_left -= size_y / 100;
+        m_y_left = std::max(m_y_left, m_height_half);
+    }
+
+    if (m_right_player_state == PlayerState::Up) {
+        m_y_right += size_y / 100;
+        m_y_right = std::min(m_y_right, size_y-m_height_half-1);
+    }
+    if (m_right_player_state == PlayerState::Down) {
+        m_y_right -= size_y / 100;
+        m_y_right = std::max(m_y_right, m_height_half);
+    }
+
+
     //Paint squares
-    drawRectangle(image_view.size().x() / 80 + 5, m_y1, image_view, {1, 1, 1});
-    drawRectangle(image_view.size().x() - image_view.size().x() / 80 - 6, m_y2, image_view, {1, 1, 1});
+
+    drawRectangle(image_view.size().x() / 80 + 5, m_y_left, image_view, {1, 1, 1});
+    drawRectangle(image_view.size().x() - image_view.size().x() / 80 - 6, m_y_right, image_view, {1, 1, 1});
 
     //upload pixels to GPU
     GL::Texture2D texture;
@@ -102,6 +158,7 @@ void PongPongApplication::drawEvent()
     triangleShader.bindTexture(texture).draw(GL::Mesh{}.setCount(3));
 
     swapBuffers();
+    redraw();
 }
 
 MAGNUM_APPLICATION_MAIN(PongPongApplication)
