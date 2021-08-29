@@ -14,7 +14,7 @@ find_package(Magnum REQUIRED GL Sdl2Application)
 
 corrade_add_resource(PP_Rcs resources.conf)
 
-add_executable(pongpong main.cpp FullScreenTriangle.cpp FullScreenTriangle.h ${PP_Rcs})
+add_executable(pongpong main.cpp PongPongApplication.cpp PongPongApplication.h FullScreenTriangle.cpp FullScreenTriangle.h ${PP_Rcs})
 
 target_link_libraries(pongpong PRIVATE
         Magnum::Application
