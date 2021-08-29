@@ -1,7 +1,7 @@
 project(PongPong)
 cmake_minimum_required(VERSION 3.19)
 
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/modules/" ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/External/magnum/modules" ${CMAKE_MODULE_PATH})
 
 # Add Corrade as a subproject
 add_subdirectory(External/corrade EXCLUDE_FROM_ALL)
