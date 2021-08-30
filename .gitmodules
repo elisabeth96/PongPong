@@ -4,3 +4,6 @@
 [submodule "External/corrade"]
 	path = External/corrade
 	url = git@github.com:mosra/corrade.git
+[submodule "External/magnum-plugins"]
+	path = External/magnum-plugins
+	url = git@github.com:mosra/magnum-plugins.git

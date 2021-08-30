@@ -5,6 +5,7 @@
     <mapping directory="$PROJECT_DIR$/External/corrade" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/External/corrade/toolchains" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/External/magnum" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/External/magnum-plugins" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/External/magnum/toolchains" vcs="Git" />
   </component>
 </project>
