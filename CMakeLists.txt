@@ -16,11 +16,18 @@ set(WITH_FREETYPEFONT ON CACHE BOOL "" FORCE)
 add_subdirectory(External/magnum-plugins EXCLUDE_FROM_ALL)
 
 find_package(Magnum REQUIRED GL Text Shaders Sdl2Application)
-find_package(MagnumPlugins REQUIRED FreeTypeFont)
+#find_package(MagnumPlugins REQUIRED FreeTypeFont)
 
 corrade_add_resource(PP_Rcs resources.conf)
 
-add_executable(pongpong main.cpp PongPongApplication.cpp PongPongApplication.h FullScreenTriangle.cpp FullScreenTriangle.h ${PP_Rcs})
+add_executable(pongpong
+        main.cpp
+        PongPongApplication.cpp
+        PongPongApplication.h
+        FullScreenTriangle.cpp
+        FullScreenTriangle.h
+        ${PP_Rcs}
+        )
 
 target_link_libraries(pongpong PRIVATE
         Corrade::Main
