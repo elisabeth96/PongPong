@@ -4,6 +4,7 @@
 #include <Magnum/Shaders/Generic.h>
 #include <Magnum/GL/GL.h>
 
+// Shader to draw a full screen triangle
 class FullScreenTriangle : public Magnum::GL::AbstractShaderProgram
 {
 public:

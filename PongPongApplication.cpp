@@ -170,7 +170,7 @@ void PongPongApplication::moveBall()
 void PongPongApplication::touchPaddle()
 {
     // left paddle interaction
-    if (m_ball.position.x() - m_ball.radius <= windowSize().x() / 80 + 5 + m_width_half &&
+    if (m_ball.position.x() - m_ball.radius <= windowSize().x() / 80 + 6 + m_width_half &&
         std::abs(m_ball.position.y() - m_y_left) < m_height_half) {
         const auto relative_position = m_ball.position.y() - m_y_left;
         const double position_ratio  = double(relative_position) / double(m_height_half);
